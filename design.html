@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Helper for Impending Typhoons</title>
+    <style>
+        .section {
+            display: none;  
+        }
+        .section.active {
+            display: block;  
+        }
+    </style>
+</head>
+<body>
+    <div class="container"> 
+        <h1><strong>Stock Helper for Impending Typhoons</strong></h1>
+        <p>Welcome to the prototype for the stock suggestions app</p>
+        
+        <!-- MAIN MENU -->
+        <div id="mainMenu" class="section active">
+            <p>Please choose an option:</p>
+            <button id="addStoreBtn">Add New Store</button>
+            <button id="viewStoresBtn">View Existing Stores</button>
+        </div>
+
+        <!-- ADD NEW STORE SECTION -->
+        <div id="newStore" class="section">
+            <h1>Add New Store</h1>
+
+            <div class="form-group">
+                <label for="store_name">Enter store name:</label>
+                <input type="text" id="store_name" placeholder="e.g., Ministop">
+            </div>
+
+            <div class="form-group">
+                <label for="store_customers">Enter average daily transactions (no. of customers):</label>
+                <input type="text" id="store_customers" placeholder="e.g., 200">
+            </div>
+
+            <div class="form-group">
+                <p>Which of the following products do you sell in your store?</p>
+                
+                <div id="store_items_list" class="checkbox-group">
+                    <input type="checkbox" id="cans" name="store_items" value="0">
+                    <label for="cans">Assorted canned goods</label><br>
+                    <input type="checkbox" id="noodles" name="store_items" value="1">
+                    <label for="noodles">Assorted instant noodles</label><br>
+                    <input type="checkbox" id="snacks" name="store_items" value="2">
+                    <label for="snacks">Assorted biscuits and snacks</label><br>
+                    <input type="checkbox" id="water" name="store_items" value="3">
+                    <label for="water">Bottled Waters</label><br>
+
+                    <input type="checkbox" id="batteries" name="store_items" value="5">
+                    <label for="batteries">Batteries</label><br>
+                    <input type="checkbox" id="flashlights" name="store_items" value="6">
+                    <label for="flashlights">Flashlights</label><br>
+                    <input type="checkbox" id="lighters" name="store_items" value="7">
+                    <label for="lighters">Lighters</label><br>
+                    <input type="checkbox" id="candles" name="store_items" value="8">
+                    <label for="candles">Candles</label><br>
+
+                    <input type="checkbox" id="cigs" name="store_items" value="10">
+                    <label for="cigs">Cigarettes</label><br>
+                    <input type="checkbox" id="dralcohol" name="store_items" value="11">
+                    <label for="dralcohol">Drinking Alcohol</label><br>
+
+                    <input type="checkbox" id="rubalcohol" name="store_items" value="15">
+                    <label for="rubalcohol">Rubbing Alcohol</label><br>
+                    <input type="checkbox" id="soap" name="store_items" value="16">
+                    <label for="soap">Soap</label><br>
+                    <input type="checkbox" id="shampoo" name="store_items" value="17">
+                    <label for="shampoo">Shampoo</label><br>
+                    <input type="checkbox" id="tissues" name="store_items" value="18">
+                    <label for="tissues">Tissues</label><br>
+
+                    <input type="checkbox" id="plastics" name="store_items" value="20">
+                    <label for="plastics">Assorted Plastics</label><br>
+                    <input type="checkbox" id="ropes" name="store_items" value="21">
+                    <label for="ropes">Ropes</label><br>
+                    <input type="checkbox" id="tape" name="store_items" value="22">
+                    <label for="tape">Packaging Tape</label><br>
+                </div>   
+            </div>    
+                
+            <button id="addStoreConfirmBtn">Add Store</button>
+            <button class="back-Btn">Back</button>
+        </div>
+
+         <!-- VIEW EXISTING STORES SECTION -->
+        <div id="viewStores" class="section">
+            <h1>Existing Stores</h1>   
+            <div id="storesList"></div>   
+
+            <div class="form-group">
+                <label for="selectStore">Which store would you like to access?</label>
+                <select id="selectStore">
+                    <option value="">-- Select a store --</option> 
+                </select>
+            </div>
+
+            <p>What would you like to do?</p>
+            <div class="button-group">
+                <button id="create-suggestion">Get new stock suggestions</button><br>
+                <button id="view-current-suggestion">View current stock suggestions</button><br>
+                <button class="back-Btn">Back to Main Menu</button>
+            </div>
+        </div>    
+
+         <!-- CREATE STOCK SUGGESTION SECTION -->
+        <div id="createSuggestion" class="section">
+            <h1>Create Stock Suggestion</h1>   
+                
+            <div class="form-group">
+                <label for="impactLevel">In a scale of 1 to 5, how much do you expect the impending typhoon to affect your area?</label>
+                <select id="impactLevel">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>  
+                    <option value="4">4</option>  
+                    <option value="5">5</option>  
+                </select>    
+            </div>   
+
+            <div class="form-group">
+                <label for="impactProbability">In a scale of 1 to 5, how likely do you think would that amount of impact happen?</label>
+                <select id="impactProbability">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>  
+                    <option value="4">4</option>  
+                    <option value="5">5</option>  
+                </select>    
+            </div>
+
+            <div class="form-group">
+                <label for="disasterDuration">(In days) how long do you think the effects of the disaster last?</label>
+                <input id="disasterDuration" type="text" placeholder="e.g., 7">
+            </div>
+
+            <button id="generateSuggestion">Generate</button>
+            
+            <div id="suggestionList"></div>  
+
+            <p>Choose an option:</p>
+            <div class="button-group">
+                <button id="stockUpdate">Update a product's stock</button><br>
+                <button class="back-Btn">Exit to Main Menu</button>
+            </div>  
+        </div>  
+
+         <!-- UPDATE STOCK SECTION -->
+        <div id="updateStockSection" class="section"> 
+            <h1>Update Product's Stock</h1>        
+
+            <div class="form-group">
+                <label for="selectStoreUpdate">Select store:</label>
+                <select id="selectStoreUpdate">
+                    <option value="">-- Select a store --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="selectProduct">Select product to update:</label>
+                <select id="selectProduct">
+                    <option value="">-- Select a product --</option> 
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="newStockValue">How much would you like to add?</label>
+                <input id="newStockValue" type="text" placeholder="e.g., 150">
+            </div>
+
+            <button id="confirmStockUpdate">Update Stock</button>
+            <button class="back-Btn">Back to Main Menu</button>
+        </div>
+    </div>
+    <script src="web.js"></script>
+</body>
+</html>
+
+  
