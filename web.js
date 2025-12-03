@@ -118,7 +118,7 @@
         }
 
         function displayStoresTable() {
-            let html = '<table>';
+            let html = '<table class ="stores-table">';
             html += '<thead><tr>';
             html += '<th>Store #</th><th>Name</th><th>Daily Customers</th><th>Items Sold</th>';
             html += '</tr></thead><tbody>';
@@ -172,7 +172,7 @@
                 return;
             }
 
-            let html = '<table>';
+            let html = '<table class="suggestions-table">';
             html += `<thead><tr><th colspan="4">Stock Suggestions for ${stores.list[store_index].name}</th></tr>`;
             html += '<tr><th>Product</th><th>Priority</th><th>Current Stock</th><th>Stock Suggested</th></tr></thead><tbody>';
 
@@ -201,7 +201,7 @@
             stores.list[store_index].stock_suggestions.forEach((product, index) => {
                 const option = document.createElement('option');
                 option.value = index;
-                option.textContent = `${product.name} (Suggested: ${product.stock_suggested}, Current: ${product.stock_progress})`;
+                option.textContent = `${product.name}`;
                 selectProduct.appendChild(option);
             });
         }
