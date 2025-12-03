@@ -11,18 +11,147 @@
         .section.active {
             display: block;  
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        }
+        h1 {
+            margin-bottom: 10px;
+            text-align: center;
+            padding-top: 15px;
+            color: #000000;
+        }
+
+        .subtitle{
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #555555;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color:#ffb600;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background-color: #ff8200;
+        }
+
+        .checkbox-group {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            max-height: 300px;           
+            overflow-y: auto;
+        }
+
+
+        .checkbox-group input[type="checkbox"] {
+        margin-right: 8px;
+        }
+
+        .button-group button {
+            display: block;
+            width: 100%;
+            margin: 2px 2px  0 0;
+        }
+
+        .stores-table,
+        .suggestions-table {
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+            min-width: 400px;
+            border-radius: 5px 5px 0 0;
+            overflow: hidden;
+        }
+
+        .stores-table thead tr,
+        .suggestions-table thead tr {
+            background-color: #f8c954;
+            color: #ffffff;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .stores-table th,
+        .stores-table td,
+        .suggestions-table th,
+        .suggestions-table td {
+            padding: 12px 15px;
+            border: 1px solid #dddddd;
+        }
+
+        .stores-table tbody tr,
+        .suggestions-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .stores-table tbody tr:last-of-type,
+        .suggestions-table tbody tr:last-of-type {
+            border-bottom: 2px solid #f8c954;
+        }
+
+        .stores-table tbody tr:hover,
+        .suggestions-table tbody tr:hover{
+            font-weight: bold;
+            color: #f8c954;
+        }
     </style>
 </head>
 <body>
     <div class="container"> 
-        <h1><strong>Stock Helper for Impending Typhoons</strong></h1>
-        <p>Welcome to the prototype for the stock suggestions app</p>
-        
-        <!-- MAIN MENU -->
+
+        <!-- MAIN MENU SECTION -->
         <div id="mainMenu" class="section active">
-            <p>Please choose an option:</p>
-            <button id="addStoreBtn">Add New Store</button>
-            <button id="viewStoresBtn">View Existing Stores</button>
+            <h1><strong>Stock Helper for Impending Typhoons</strong></h1>
+                <p class="subtitle">Never overstock, understock, or run out when it matters most</p>
+                 
+                <div style="text-align: center;">
+                    <button id="addStoreBtn">Add New Store</button>
+                    <button id="viewStoresBtn">View Existing Stores</button>
+                </div>
         </div>
 
         <!-- ADD NEW STORE SECTION -->
@@ -30,57 +159,78 @@
             <h1>Add New Store</h1>
 
             <div class="form-group">
-                <label for="store_name">Enter store name:</label>
-                <input type="text" id="store_name" placeholder="e.g., Ministop">
+                <label>
+                    <strong>Enter Store name:</strong>
+                    <input type="text" id="store_name" placeholder="e.g., Ministop">
+                </label>
             </div>
 
             <div class="form-group">
-                <label for="store_customers">Enter average daily transactions (no. of customers):</label>
-                <input type="text" id="store_customers" placeholder="e.g., 200">
+                <label>
+                    <strong>Enter average daily transactions (no. of customers):</strong>
+                    <input type="text" id="store_customers" placeholder="e.g., 200">
+                </label>
             </div>
 
             <div class="form-group">
-                <p>Which of the following products do you sell in your store?</p>
+                <p style="padding-top: 15px"><strong>Which of the following products do you sell in your store?</strong></p>
                 
                 <div id="store_items_list" class="checkbox-group">
-                    <input type="checkbox" id="cans" name="store_items" value="0">
-                    <label for="cans">Assorted canned goods</label><br>
-                    <input type="checkbox" id="noodles" name="store_items" value="1">
-                    <label for="noodles">Assorted instant noodles</label><br>
-                    <input type="checkbox" id="snacks" name="store_items" value="2">
-                    <label for="snacks">Assorted biscuits and snacks</label><br>
-                    <input type="checkbox" id="water" name="store_items" value="3">
-                    <label for="water">Bottled Waters</label><br>
+                    <label>
+                    <input type="checkbox" id="cans" name="store_items" value="0">Assorted canned goods
+                    </label>
+                    <label>
+                    <input type="checkbox" id="noodles" name="store_items" value="1">Assorted instant noodles
+                    </label>
+                    <label>
+                    <input type="checkbox" id="snacks" name="store_items" value="2">Assorted biscuits and snacks
+                    </label>
+                    <label>
+                    <input type="checkbox" id="water" name="store_items" value="3">Bottled Waters
+                    </label>
 
-                    <input type="checkbox" id="batteries" name="store_items" value="5">
-                    <label for="batteries">Batteries</label><br>
-                    <input type="checkbox" id="flashlights" name="store_items" value="6">
-                    <label for="flashlights">Flashlights</label><br>
-                    <input type="checkbox" id="lighters" name="store_items" value="7">
-                    <label for="lighters">Lighters</label><br>
-                    <input type="checkbox" id="candles" name="store_items" value="8">
-                    <label for="candles">Candles</label><br>
+                    <label>
+                    <input type="checkbox" id="batteries" name="store_items" value="5">Batteries
+                    </label>
+                    <label>
+                    <input type="checkbox" id="flashlights" name="store_items" value="6">Flashlights
+                    </label>
+                    <label>
+                    <input type="checkbox" id="lighters" name="store_items" value="7">Lighters
+                    </label>
+                    <label>
+                    <input type="checkbox" id="candles" name="store_items" value="8">Candles
+                    </label>
 
-                    <input type="checkbox" id="cigs" name="store_items" value="10">
-                    <label for="cigs">Cigarettes</label><br>
-                    <input type="checkbox" id="dralcohol" name="store_items" value="11">
-                    <label for="dralcohol">Drinking Alcohol</label><br>
+                    <label>
+                    <input type="checkbox" id="cigs" name="store_items" value="10">Cigarettes
+                    </label>
+                    <label>
+                    <input type="checkbox" id="dralcohol" name="store_items" value="11">Drinking Alcohol
+                    </label>
 
-                    <input type="checkbox" id="rubalcohol" name="store_items" value="15">
-                    <label for="rubalcohol">Rubbing Alcohol</label><br>
-                    <input type="checkbox" id="soap" name="store_items" value="16">
-                    <label for="soap">Soap</label><br>
-                    <input type="checkbox" id="shampoo" name="store_items" value="17">
-                    <label for="shampoo">Shampoo</label><br>
-                    <input type="checkbox" id="tissues" name="store_items" value="18">
-                    <label for="tissues">Tissues</label><br>
-
-                    <input type="checkbox" id="plastics" name="store_items" value="20">
-                    <label for="plastics">Assorted Plastics</label><br>
-                    <input type="checkbox" id="ropes" name="store_items" value="21">
-                    <label for="ropes">Ropes</label><br>
-                    <input type="checkbox" id="tape" name="store_items" value="22">
-                    <label for="tape">Packaging Tape</label><br>
+                    <label>
+                    <input type="checkbox" id="rubalcohol" name="store_items" value="15">Rubbing Alcohol
+                    </label>
+                    <label>
+                    <input type="checkbox" id="soap" name="store_items" value="16">Soap
+                    </label>
+                    <label>
+                    <input type="checkbox" id="shampoo" name="store_items" value="17">Shampoo
+                    </label>
+                    <label>
+                    <input type="checkbox" id="tissues" name="store_items" value="18">Tissues
+                    </label>
+                    
+                    <label>
+                    <input type="checkbox" id="plastics" name="store_items" value="20">Assorted Plastics
+                    </label>
+                    <label>
+                    <input type="checkbox" id="ropes" name="store_items" value="21">Ropes
+                    </label>
+                    <label>
+                    <input type="checkbox" id="tape" name="store_items" value="22">Packaging Tape
+                    </label>
                 </div>   
             </div>    
                 
@@ -100,7 +250,7 @@
                 </select>
             </div>
 
-            <p>What would you like to do?</p>
+            <p class="subtitle"><strong>What would you like to do?</strong></p>
             <div class="button-group">
                 <button id="create-suggestion">Get new stock suggestions</button><br>
                 <button id="view-current-suggestion">View current stock suggestions</button><br>
@@ -143,7 +293,6 @@
             
             <div id="suggestionList"></div>  
 
-            <p>Choose an option:</p>
             <div class="button-group">
                 <button id="stockUpdate">Update a product's stock</button><br>
                 <button class="back-Btn">Exit to Main Menu</button>
