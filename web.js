@@ -9,27 +9,27 @@
 
         const ITEMS = {
 
-            cans:          { id: 0, priority: 1, prio_weight: 0.15, BDD: 1 },
-            noodles:       { id: 1, priority: 1, prio_weight: 0.15, BDD: 1 },
-            snacks:        { id: 2, priority: 1, prio_weight: 0.15, BDD: 1 },
-            water:         { id: 3, priority: 1, prio_weight: 0.15, BDD: 0.15 },
+            cans:          { id: 0, priority: 1, prio_weight: 2, BDD: .10 },
+            noodles:       { id: 1, priority: 1, prio_weight: 2, BDD: .12 },
+            snacks:        { id: 2, priority: 1, prio_weight: 2, BDD: .30 },
+            water:         { id: 3, priority: 1, prio_weight: 2, BDD: .45 },
 
-            batteries:     { id: 5, priority: 2, prio_weight: 0.10, BDD: 0.25 },
-            flashlights:   { id: 6, priority: 2, prio_weight: 0.10, BDD: 0.20 },
-            lighters:      { id: 7, priority: 2, prio_weight: 0.10, BDD: 0.10 },
-            candles:       { id: 8, priority: 2, prio_weight: 0.10, BDD: 0.10 },
+            batteries:     { id: 5, priority: 2, prio_weight: 1.50, BDD: .06 },
+            flashlights:   { id: 6, priority: 2, prio_weight: 1.50, BDD: .01 },
+            lighters:      { id: 7, priority: 2, prio_weight: 1.50, BDD: .12 },
+            candles:       { id: 8, priority: 2, prio_weight: 1.50, BDD: .05 },
 
-            cigs:          { id: 10, priority: 3, prio_weight: 0.08, BDD: 0.15 },
-            dralcohol:     { id: 11, priority: 3, prio_weight: 0.08, BDD: 0.15 },
+            cigs:          { id: 10, priority: 3, prio_weight: 1.25, BDD: .40 },
+            dralcohol:     { id: 11, priority: 3, prio_weight: 1.25, BDD: .15 },
 
-            rubalcohol:    { id: 15, priority: 4, prio_weight: 0.05, BDD: 0.20 },
-            soap:          { id: 16, priority: 4, prio_weight: 0.05, BDD: 0.20 },
-            shampoo:       { id: 17, priority: 4, prio_weight: 0.05, BDD: 0.20 },
-            tissues:       { id: 18, priority: 4, prio_weight: 0.05, BDD: 0.10 },
+            rubalcohol:    { id: 15, priority: 4, prio_weight: 1.15, BDD: .20 },
+            soap:          { id: 16, priority: 4, prio_weight: 1.15, BDD: .12 },
+            shampoo:       { id: 17, priority: 4, prio_weight: 1.15, BDD: .10 },
+            tissues:       { id: 18, priority: 4, prio_weight: 1.15, BDD: .20 },
 
-            plastics:      { id: 20, priority: 4, prio_weight: 0.05, BDD: 0.25 },
-            ropes:         { id: 21, priority: 4, prio_weight: 0.05, BDD: 0.15 },
-            tape:          { id: 22, priority: 4, prio_weight: 0.05, BDD: 0.15 }
+            plastics:      { id: 20, priority: 4, prio_weight: 1.0, BDD: .06 },
+            ropes:         { id: 21, priority: 4, prio_weight: 1.0, BDD: .02 },
+            tape:          { id: 22, priority: 4, prio_weight: 1.0, BDD: .03 }
         };
 
         class Store {
@@ -87,6 +87,22 @@
                     info_suggestion = ((demand * population) + (risk_perc * prio_weight * (demand * population))) * duration;
                     info_suggestion = Number(Math.ceil(info_suggestion));
                     
+                    switch (curr_id)
+                    {
+                        case 3:
+                            info_name = "water (500 ml)"
+                            break;
+                        case 10:
+                            info_name = "cigarettes"
+                            break;
+                        case 11:
+                            info_name = "drinking alcohol"
+                            break;
+                        case 15:
+                            info_name = "rubbing alcohol"
+                            break;
+                    }
+    
                     return {
                         name: info_name,
                         id: curr_id,

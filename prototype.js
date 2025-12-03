@@ -21,8 +21,8 @@
 const ITEMS =
 {
   // food items (id starts at 0)
-  cans:          { id: 0, priority: 1, prio_weight: 0.15, BDD: 1 },
-  noodles:       { id: 1, priority: 1, prio_weight: 0.15, BDD: 1 },
+  cans:          { id: 0, priority: 1, prio_weight: 0.15, BDD: .10 },
+  noodles:       { id: 1, priority: 1, prio_weight: 0.15, BDD: .12 },
   snacks:        { id: 2, priority: 1, prio_weight: 0.15, BDD: 1 },
   water:         { id: 3, priority: 1, prio_weight: 0.15, BDD: 0.15 },
 
