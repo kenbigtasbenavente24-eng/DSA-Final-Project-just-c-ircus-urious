@@ -28,13 +28,16 @@
             max-width: 800px;
             margin: auto;
             background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
+            padding: 30px;
+            border-radius: 26px;
+            box-shadow: 0px 187px 75px rgba(0, 0, 0, 0.01), 
+                0px 105px 63px rgba(0, 0, 0, 0.05), 
+                0px 47px 47px rgba(0, 0, 0, 0.09), 
+                0px 12px 26px rgba(0, 0, 0, 0.1), 
+                0px 0px 0px rgba(0, 0, 0, 0.1);
         }
         h1 {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             text-align: center;
             padding-top: 15px;
             color: #000000;
@@ -58,9 +61,23 @@
 
         input[type="text"], select {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 9px;
+            outline: none;
+            background-color: #F2F2F2;
+            border: 1px solid #e5e5e500;
+            transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+            font-size: 14px;
+            color: #333;
+        }
+
+        input[type="text"]:focus, 
+        select:focus {
+            margin: 5px;
+            border: 1px solid transparent;
+            box-shadow: 0px 0px 0px 2px #ffb600;
+            background-color: transparent;
         }
 
         button {
@@ -68,13 +85,19 @@
             color: white;
             padding: 10px 20px;
             border: none;
-            border-radius: 20px;
+            border-radius: 10px;
             cursor: pointer;
             margin-top: 5px;
+            font-weight: 700;
+            font-size: 13px;
+            outline: none;
+            box-shadow: 0px 0px 0px 0px #FFFFFF, 0px 0px 0px 0px #00000000;
+            transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
         }
 
         button:hover {
-            background-color: #ff8200;
+            box-shadow: 0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #ffb60050;
+            transform: translateY(-1px);
         }
 
         .checkbox-group {
@@ -86,9 +109,8 @@
             overflow-y: auto;
         }
 
-
         .checkbox-group input[type="checkbox"] {
-        margin-right: 8px;
+            margin-right: 8px;
         }
 
         .button-group button {
@@ -109,9 +131,9 @@
 
         .stores-table thead tr,
         .suggestions-table thead tr {
-            background-color: #f8c954;
+            background-color: #ffb600;
             color: #ffffff;
-            text-align: left;
+            text-align: center;
             font-weight: bold;
         }
 
@@ -130,13 +152,13 @@
 
         .stores-table tbody tr:last-of-type,
         .suggestions-table tbody tr:last-of-type {
-            border-bottom: 2px solid #f8c954;
+            border-bottom: 2px solid #ffb600;
         }
 
         .stores-table tbody tr:hover,
         .suggestions-table tbody tr:hover{
             font-weight: bold;
-            color: #f8c954;
+            color: #ffb600;
         }
     </style>
 </head>
@@ -244,7 +266,7 @@
             <div id="storesList"></div>   
 
             <div class="form-group">
-                <label for="selectStore">Which store would you like to access?</label>
+                <label for="selectStore"><strong>Which store would you like to access?</strong></label>
                 <select id="selectStore">
                     <option value="">-- Select a store --</option> 
                 </select>
@@ -318,7 +340,7 @@
             </div>
 
             <div class="form-group">
-                <label for="newStockValue">How much would you like to add?</label>
+                <label for="newStockValue"><strong>How much would you like to add?</strong></label>
                 <input id="newStockValue" type="text" placeholder="e.g., 150">
             </div>
 
