@@ -12,7 +12,7 @@
             cans:          { id: 0, priority: 1, prio_weight: 2, BDD: .10 },
             noodles:       { id: 1, priority: 1, prio_weight: 2, BDD: .12 },
             snacks:        { id: 2, priority: 1, prio_weight: 2, BDD: .30 },
-            water:         { id: 3, priority: 1, prio_weight: 2, BDD: .45 },
+            drinks:        { id: 3, priority: 1, prio_weight: 2, BDD: .45 },
 
             batteries:     { id: 5, priority: 2, prio_weight: 1.50, BDD: .06 },
             flashlights:   { id: 6, priority: 2, prio_weight: 1.50, BDD: .01 },
@@ -54,6 +54,27 @@
         const stores = new Store_list();
         let currentStoreIndex = null;
 
+        // - - - - - IndexedDB Setup - - - - - //
+
+        let db;
+        const DB_NAME = "StockAppDB";
+        const DB_VERSION = 1;
+
+        // Open Database
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = function(event) {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains("stores")) {
+                db.createObjectStore("stores", { keyPath: "name" });
+            }
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+            loadStoresFromDB();
+        };
+
         console.log("Project loaded successfully.");
 
         function make_store(store_name, store_customers, store_items) {
@@ -66,6 +87,7 @@
 
             stores.list[index].included_items.forEach((id, arr_idx) => {
                 temp_arr[arr_idx] = calculate_stock(index, id, risk_score, duration);
+                temp_arr[arr_idx].prio_score = calculate_priority(temp_arr[arr_idx]);
             });
 
             stores.list[index].stock_suggestions = temp_arr;
@@ -89,11 +111,23 @@
                     
                     switch (curr_id)
                     {
+                        case 0:
+                            info_name = "assorted canned goods"
+                            break;
+                        case 1:
+                            info_name = "assorted instant noodles"
+                            break;
+                        case 2:
+                            info_name = "assorted snacks"
+                            break;
                         case 3:
-                            info_name = "water (500 ml)"
+                            info_name = "non-alcoholic drinks (250 ml)"
+                            break;
+                        case 5:
+                            info_name = "batteries (in packs) (i.e. AA, AAA)"
                             break;
                         case 10:
-                            info_name = "cigarettes"
+                            info_name = "cigarettes (in pieces)"
                             break;
                         case 11:
                             info_name = "drinking alcohol"
@@ -101,29 +135,35 @@
                         case 15:
                             info_name = "rubbing alcohol"
                             break;
+                        case 20:
+                            info_name = "assorted plastics"
+                            break;
+                        case 21:
+                            info_name = "rope (in meters)"
+                            break;
                     }
     
                     return {
                         name: info_name,
                         id: curr_id,
                         priority: info_prio,
+                        prio_score: 0,
                         stock_suggested: info_suggestion,
                         stock_progress: 0,
-                        completion: false
                     };
                 }
             }
         }
 
+        function calculate_priority(item) {
+            let prio_score = 100 - 100*((item.stock_progress / item.stock_suggested)*(1 / item.priority));
+            return prio_score;
+        }
+
         function update_stock(stock_list, index, add) {
             stock_list[index].stock_progress += add;
-
-            if (stock_list[index].stock_progress >= stock_list[index].stock_suggested) {
-                stock_list[index].completion = true;
-                let temp = stock_list[index];
-                stock_list.splice(index, 1);
-                stock_list.push(temp);
-            }
+            stock_list[index].prio_score = Number(Math.ceil(calculate_priority(stock_list[index])));
+            stock_list.sort((a, b) => b.prio_score - a.prio_score);
         }
 
         function showSection(sectionId) {
@@ -182,11 +222,26 @@
             });
         }
 
+        function getPriority(score) {
+            if (score <= 0)
+                return "Completed";
+            else if (score >= 80)
+                return "Critical";
+            else if (score >= 60)
+                return "High";
+            else if (score >= 30)
+                return "Moderate";
+            else
+                return "Low";
+        }
+
         function displaySuggestion(store_index) {
             if (!stores.list[store_index].stock_suggestions || stores.list[store_index].stock_suggestions.length === 0) {
                 document.getElementById('suggestionList').innerHTML = "<p>No stock suggestions yet. Please generate suggestions first.</p>";
                 return;
             }
+
+            let notice = '<p style="padding-top: 15px"><strong>All stock suggestions met. Generate a new suggestion now!</strong></p>';
 
             let html = '<table class="suggestions-table">';
             html += `<thead><tr><th colspan="4">Stock Suggestions for ${stores.list[store_index].name}</th></tr>`;
@@ -195,14 +250,20 @@
             stores.list[store_index].stock_suggestions.forEach((product) => {
                 html += `<tr>`;
                 html += `<td>${product.name}</td>`;
-                html += `<td>${product.priority}</td>`;
+                html += `<td>${getPriority(product.prio_score)}</td>`;
                 html += `<td>${product.stock_progress}</td>`;
                 html += `<td>${product.stock_suggested}</td>`;
                 html += '</tr>';
             });
 
             html += '</tbody></table>';
-            document.getElementById('suggestionList').innerHTML = html;
+            if (stores.list[store_index].stock_suggestions[0].prio_score <= 0) {
+                document.getElementById('suggestionList').innerHTML = notice + html;
+            }
+            else {
+                document.getElementById('suggestionList').innerHTML = html;
+            }
+                
         }
 
         function updateProductDropdown(store_index) {
@@ -220,6 +281,30 @@
                 option.textContent = `${product.name}`;
                 selectProduct.appendChild(option);
             });
+        }
+
+        function loadStoresFromDB() {
+            const tx = db.transaction("stores", "readonly");
+            const storeDB = tx.objectStore("stores");
+
+            const getAllRequest = storeDB.getAll();
+            getAllRequest.onsuccess = () => {
+                if (getAllRequest.result.length > 0) {
+                    getAllRequest.result.forEach(data => {
+                        stores.add_store(new Store(data.name, data.customer_count, data.included_items));
+                        stores.list[stores.list.length - 1].stock_suggestions = data.stock_suggestions || [];
+                    });
+
+                    displayStoresTable();
+                    updateStoreDropdown();
+                }
+            };
+        }
+
+        function saveStoreToDB(store) {
+            const tx = db.transaction("stores", "readwrite");
+            const storeDB = tx.objectStore("stores");
+            storeDB.put(store);
         }
 
         document.getElementById("addStoreBtn").addEventListener("click", function() {
@@ -247,6 +332,7 @@
             }
 
             make_store(store_name, store_customers, store_items);
+            saveStoreToDB(stores.list[stores.list.length - 1]);
             alert("Store added successfully!");
 
             document.getElementById("store_name").value = "";
@@ -300,6 +386,7 @@
             create_stock(parseInt(store_index), impact, probability, duration);
             alert("Stock suggestion successfully created!");
             displaySuggestion(parseInt(store_index));
+            saveStoreToDB(stores.list[store_index]);
         });
 
         document.getElementById("stockUpdate").addEventListener("click", function() {
@@ -330,8 +417,9 @@
             }
             
             update_stock(stores.list[parseInt(storeIndex)].stock_suggestions, productIndex, stockToAdd);
-            alert("Stock updated successfully!"); 
-            
+            saveStoreToDB(stores.list[parseInt(storeIndex)]);
+            alert("Stock updated successfully!");
+
             document.getElementById("newStockValue").value = "";
             displaySuggestion(parseInt(storeIndex));
             showSection('createSuggestion');
